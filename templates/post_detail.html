@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+
+{% block head %}
+ <style>
+  /* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Global Styles */
+body {
+  font-family: 'Helvetica Neue', sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Post Styles */
+.post-card {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.author {
+  font-weight: bold;
+  color: #3498db;
+}
+
+.image-card {
+  max-width: 100%;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post-actions {
+  display: flex;
+  align-items: center;
+  margin: 20px;
+}
+
+.heart-icon {
+  font-size: 24px;
+  color: gray;
+  transition: color 0.3s;
+  margin-right: 10px;
+}
+
+.liked {
+  color: red;
+}
+
+.comment-section {
+  margin-top: 20px;
+}
+
+.comment-form {
+  margin-bottom: 20px;
+}
+
+.comment-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.comment-button {
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.comment-button:hover {
+  background-color: #2980b9;
+}
+
+/* Comment Styles */
+.comment-item {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.comment-author {
+  font-weight: bold;
+  color: #3498db;
+}
+
+.comment-body {
+  margin-top: 5px;
+}
+
+.comment-timestamp {
+  color: #aaa;
+  font-size: 12px;
+}
+
+.comment-reply {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+  margin-top: 10px;
+    margin-left: 50px;
+}
+
+  /* Additional styles for buttons */
+  .button {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  .edit-button {
+    background-color: #3498db;
+    color: #fff;
+    margin-right: 10px;
+    text-decoration: none;
+  }
+
+  .edit-button:hover {
+    background-color: #2980b9;
+  }
+
+  .delete-button {
+    background-color: cornflowerblue;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .delete-button:hover {
+    background-color: #c0392b;
+  }
+ .like-count {
+     margin-top: auto;
+    padding-left: 25px;
+}
+
+ </style>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    {% set p = post %}
+
+    <div class="post-card">
+      <div class="post-header">
+        <p class="author">By: <a href="{{ url_for('profile', username=p.author.username) }}">{{ p.author.username }}</a></p>
+
+        {% if p.author.username == current_user.username %}
+          <a href="{{ url_for('edit_post', id=p.id) }}" class="button edit-button">Edit Post</a>
+        {% endif %}
+      </div>
+
+      <div class="post-image">
+        <img src="{{ p.img }}" class="image-card" alt="...">
+      </div>
+
+     <div class="post-actions">
+  {% if current_user.post_liked(p) %}
+    <a href="{{ url_for('like_action', post_id=p.id, action='dislike') }}" class="heart-icon liked" id="{{ p.id }}">❤</a>
+  {% else %}
+    <a href="{{ url_for('like_action', post_id=p.id, action='like') }}" class="heart-icon" id="{{ p.id }}">❤</a>
+  {% endif %}
+  {% if current_user.username == p.author.username %}
+    <a href="{{ url_for('delete_post', id=p.id) }}" class="button delete-button">Delete</a>
+  {% endif %}
+</div>
+     <p class="like-count">{{ p.likes.count() }}</p>
+
+      <p class="post-timestamp">Posted: {{ p.timestamp }}</p>
+    </div>
+
+    <div class="comment-section">
+      {% for c in p.comments %}
+          <div class="comment-item">
+            <a href="{{url_for('profile', username=c.author.username)}}" class="comment-author">{{c.author.username}}</a>
+            <p class="comment-body">{{c.body}}</p>
+            <p class="comment-timestamp">Commented: {{c.timestamp}}</p>
+
+            <!-- Reply form for each comment -->
+            <form action="{{ url_for('addComment', post_id=p.id) }}" method="post" class="reply-form">
+              <input type="hidden" name="parent_id" value="{{ c.id }}">
+              <input class="comment-input" placeholder="Add a reply" type="text" id='comment_{{p.id}}' name="Comment">
+              <button type="submit" class="comment-button">Add Reply</button>
+            </form>
+
+            <!-- Display replies to the comment -->
+            {% for reply in p.comments if reply.parent_id == c.id %}
+              <div class="comment-reply">
+                <a href="{{url_for('profile', username=reply.author.username)}}" class="comment-author">{{reply.author.username}}</a>
+                <p class="comment-body">{{reply.body}}</p>
+                <p class="comment-timestamp">Replied: {{reply.timestamp}}</p>
+              </div>
+            {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+   <div class="comment-form">
+    <form action="{{ url_for('addComment', post_id=p.id) }}" method="post" id="post_{{ p.id }}">
+        <div class="input-group">
+            <input style="width: 500px;margin-left: 50px" class="comment-input" placeholder="Add a comment" type="text" id='comment_{{ p.id }}' name="Comment">
+        </div>
+        <button style="margin-left: 50px" class="comment-button" type="submit" id="p_{{ p.id }}">Post Comment</button>
+    </form>
+</div>
+
+  </div>
+{% endblock %}
+

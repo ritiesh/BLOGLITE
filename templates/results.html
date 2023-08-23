@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Flask Music Database</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: scroll;
+    max-height: 700px; /* Adjust the maximum height as needed */
+  }
+  .profile-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+
+
+  .profile-button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .profile-button:hover {
+    background-color: #2980b9;
+  }
+  p{
+      color: orangered;
+      font-size: large;
+
+  }
+  p:hover{
+      transform: scale(1.05);
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+    <center>
+<div class="container">
+    <h2 style="font-size: large;padding-bottom: 20px;"><b>USER PROFILES</b></h2>
+    {% for i in results %}
+    <div class="profile-item">
+        <p><b>{{ i.username }}</b></p>
+        <button class="profile-button" onclick="window.location.href='/profile/{{ i.username }}'">View Profile</button>
+    </div>
+    {% endfor %}
+</div>
+    </center>
+{% endblock %}

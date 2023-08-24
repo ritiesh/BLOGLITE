@@ -198,6 +198,7 @@ body {
 
     <div class="comment-section">
       {% for c in p.comments %}
+        {% if not c.parent_id %}
           <div class="comment-item">
             <a href="{{url_for('profile', username=c.author.username)}}" class="comment-author">{{c.author.username}}</a>
             <p class="comment-body">{{c.body}}</p>
@@ -209,14 +210,16 @@ body {
               <input class="comment-input" placeholder="Add a reply" type="text" id='comment_{{p.id}}' name="Comment">
               <button type="submit" class="comment-button">Add Reply</button>
             </form>
-
+        {% endif %}
             <!-- Display replies to the comment -->
             {% for reply in p.comments if reply.parent_id == c.id %}
-              <div class="comment-reply">
-                <a href="{{url_for('profile', username=reply.author.username)}}" class="comment-author">{{reply.author.username}}</a>
-                <p class="comment-body">{{reply.body}}</p>
-                <p class="comment-timestamp">Replied: {{reply.timestamp}}</p>
-              </div>
+              {% if c.id==reply.parent_id %}
+                <div class="comment-reply">
+                  <a href="{{url_for('profile', username=reply.author.username)}}" class="comment-author">{{reply.author.username}}</a>
+                  <p class="comment-body">{{reply.body}}</p>
+                  <p class="comment-timestamp">Replied: {{reply.timestamp}}</p>
+                </div>
+              {% endif %}
             {% endfor %}
           </div>
         {% endfor %}

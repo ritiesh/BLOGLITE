@@ -14,7 +14,7 @@ class signupForm(FlaskForm):
     f_name = StringField('First Name', validators=[InputRequired()],render_kw={'style':'padding:5px;border:1px solid #ccc;border-radius:3px',"placeholder": "Firstname"})
     l_name = StringField('Last Name', validators=[InputRequired()],render_kw={'style':'padding:5px;border:1px solid #ccc;border-radius:3px',"placeholder": "Lastname"})
     email = StringField('Email', validators=[InputRequired()], render_kw={'style':'padding:5px;border:1px solid #ccc;border-radius:3px',"placeholder": "Email"})
-    password = PasswordField('Password', validators=[InputRequired()], render_kw={'style':'padding:5px;border:1px solid #ccc;border-radius:3px',"placeholder": "Password"})
+    password = PasswordField('Password', validators=[InputRequired(),Length(min=4, max=100)], render_kw={'style':'padding:5px;border:1px solid #ccc;border-radius:3px',"placeholder": "Password"})
     submit = SubmitField('Signup',render_kw={'style':'width:70px;background-color:blue;color:white;margin-left:90px;border:none;border-radius:3px;padding:5px'})
 
     def validate_username(self, username):

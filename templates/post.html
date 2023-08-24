@@ -1,19 +1,88 @@
 {% extends 'base.html' %}
 
 {% block head %}
-    <title>post</title>
+    <title>Post</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    /* Additional styling for the form */
+.post-form {
+    max-width: 400px;
+    margin-top: 50px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Style the submit button */
+.submit-btn {
+    width: 100%;
+    margin-top: 20px;
+    background-color: #3498db;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+}
+
+/* Style form labels */
+.form-label {
+    font-weight: bold;
+    color: #3498db;
+    margin-bottom: 5px;
+}
+
+/* Style form title */
+.form-title {
+    font-size: 24px;
+    color: #3498db;
+    margin-bottom: 20px;
+}
+
+/* Style form inputs */
+.form-control {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:hover, .form-control:focus {
+    border-color: #3498db;
+}
+
+/* Add a bit of space between form elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+    </style>
 {% endblock %}
 
 {% block body %}
-    <div class="center">
-        <form action="/create-post" method="POST" enctype="multipart/form-data">
-            <h1>Post your thing...</h1>
-                {{ form.hidden_tag() }}
-            <h3>Description</h3>
-                {{ form.desc }}
-            <h3>Image</h3>
-                {{ form.img }}<br><br>
-            {{ form.post }}
-        </form>
-    </div>
+<div class="center">
+<center>
+    <form action="/create-post" method="POST" enctype="multipart/form-data" class="post-form">
+        <h1 class="form-title">Post Your Thing</h1>
+        {{ form.hidden_tag() }}
+
+        <div class="form-group">
+            <label for="desc" class="form-label">Description</label>
+            {{ form.desc(class='form-control', id='desc', placeholder='Enter description') }}
+        </div>
+
+        <div class="form-group">
+            <label for="img" class="form-label">Image</label><br>
+            {{ form.img(class='form-control-file', id='img') }}
+        </div>
+
+        <div class="form-group">
+            <label for="post" class="form-label">Post</label>
+            {{ form.post(class='form-control', id='post', rows='4', placeholder='Write your post...')}}
+        </div>
+    </form>
+    </center>
+</div>
 {% endblock %}

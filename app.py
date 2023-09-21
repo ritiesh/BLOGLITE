@@ -6,8 +6,10 @@ from flask_login import LoginManager
 from flask_restful import Resource, Api
 from applications.database import db
 from flask_uploads import UploadSet, IMAGES, configure_uploads
+from flask_pagedown import PageDown
 from applications.config import *
 from applications.models import *
+from jinja_markdown import MarkdownExtension
 
 
 app = None
@@ -24,6 +26,10 @@ def create_app():
 
 
 app, api = create_app()
+pagedown = PageDown(app)
+
+with app.app_context():
+    app.jinja_env.add_extension(MarkdownExtension)
 
 UPLOAD_FOLDER = os.path.join('static','photos')
 # print(UPLOAD_FOLDER)

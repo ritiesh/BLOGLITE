@@ -1,19 +1,85 @@
 {% extends 'base.html' %}
 
 {% block head %}
+<style>
+    /* Add CSS styles for your form here */
+    body {
+        font-family: Arial, sans-serif;
 
+    }
+
+    h1 {
+        margin-top: 30px;
+        color: #333;
+    }
+
+    form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    button[type="submit"] {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
-    <h1>Edit Post</h1>
-
-    {% from "formhelpers.html" import render_field %}
-    <form method="POST" enctype="multipart/form-data">
-        {{ form.hidden_tag() }}
-        <p>
-            {{ render_field(form.img) }}
-            {{ render_field(form.desc) }}<br>
-        </p>
-            {{ form.update }}
-    </form>
+    <center>
+<h1>Edit Post</h1></center>
+<center>
+{% from "formhelpers.html" import render_field %}
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+    <p>
+        <label for="{{ form.img.id }}"></label>
+        {{ render_field(form.img) }}
+    </p>
+    <p>
+        <label for="{{ form.desc.id }}"></label>
+        {{ render_field(form.desc) }}
+    </p>
+    <p>
+        <button type="submit" class="btn">Update</button>
+    </p>
+</form>
+    </center>
 {% endblock %}

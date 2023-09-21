@@ -6,7 +6,7 @@ from flask_wtf.file import FileAllowed, FileRequired
 from wtforms import StringField, PasswordField, SubmitField, FileField, BooleanField, SelectField, form, TextAreaField
 from wtforms.validators import InputRequired, ValidationError, Length
 from applications.models import *
-
+from flask_pagedown.fields import PageDownField
 
 class signupForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=20)],
@@ -33,7 +33,7 @@ class signinForm(FlaskForm):
 
 
 class PostForm(FlaskForm):
-    desc = StringField('Text')
+    desc = PageDownField('Enter Your Markdown')
     img = FileField('Image', validators=[FileAllowed(['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'])])  # IMAGE
     post = SubmitField('Post')
 

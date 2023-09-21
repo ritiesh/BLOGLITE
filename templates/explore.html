@@ -27,6 +27,8 @@
   <!-- responsive style -->
   <link href="static/css/responsive.css" rel="stylesheet" />
 </head>
+    {% endblock %}
+{% block style %}
 <style>
   .box {
     border: 1px solid #ccc;
@@ -50,11 +52,42 @@
     padding: 10px;
     background-color: #f8f8f8;
   }
+  /* Animated background styles */
+.animated-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Place it behind other content */
+  opacity: 0.5; /* Adjust the opacity as desired */
+  pointer-events: none; /* Allow interactions with content behind it */
+  background: linear-gradient(45deg, #FF5733, #33FF57, #5733FF, #FF5733);
+  background-size: 400% 400%; /* Adjust the size as needed */
+  animation: gradientAnimation 15s linear infinite; /* Adjust the animation duration */
+}
+
+/* Keyframes for background animation */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
 </style>
 {% endblock %}
 <!-- contact section -->
 <body>
 {% block body %}
+    <!-- Animated background container -->
+<div class="animated-background"></div>
+
 <section class="blog_section layout_padding">
   <div class="container">
     <div class="heading_container">
@@ -71,7 +104,7 @@
           </div>
           <div class="detail-box">
             <center>
-              <h5>{{ p.description }}</h5>
+                <h5><md-block>{{ p.description }}</md-block></h5>
             </center>
           </div>
         </div>
@@ -80,6 +113,28 @@
     </div>
   </div>
 </section>
+    {% endblock %}
+    <!-- JavaScript for background animation -->
+{% block scripts %}
+<script>
+  // Function to resize the background on window resize
+  function resizeBackground() {
+    const background = document.querySelector('.animated-background');
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // Set the background size to match the window size
+    background.style.width = `${windowWidth}px`;
+    background.style.height = `${windowHeight}px`;
+  }
+
+  // Call the resizeBackground function on window resize
+  window.addEventListener('resize', resizeBackground);
+
+  // Initial call to set the background size
+  window.addEventListener('load', resizeBackground);
+</script>
+
 {% endblock %}
 </body>
 <!-- end blog section -->

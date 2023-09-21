@@ -7,6 +7,8 @@ from flask_login import LoginManager, login_required, logout_user, login_user, c
 from sqlalchemy import values
 from werkzeug.utils import secure_filename
 from app import photos
+from urllib.parse import urlparse
+from applications.database import db
 from applications.forms import *
 from applications.models import *
 
@@ -223,6 +225,11 @@ def like_action(post_id, action):
 @app.route('/delete_post/<id>')
 @login_required
 def delete_post(id):
+    post = Post.query.filter_by(id=int(id)).first()
+    if post:  
+        image_path = urlparse(post.img).path.lstrip('/')
+        if os.path.exists(image_path):
+            os.remove(image_path)
     Comments.query.filter_by(post_id=int(id)).delete()
     Post.query.filter_by(id=int(id)).delete()
     db.session.commit()

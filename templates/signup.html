@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% block head %}
+{% extends 'base.html' %}
+{% block head %}
+
 <title>Signup</title>
 {% endblock %} {% block style %} * { margin: 0; padding: 0; box-sizing:
 border-box; } body { background: linear-gradient(to right, #ffcc00, #ff6699); }
@@ -73,9 +75,10 @@ center; justify-content: center; } .page .footer { width: 100%; } } {% endblock
     >
       <p>
         Have an account?
-        <a href="  {{ url_for( 'signin') }} ">Sign in</a>
+        <a style="color: red" href="  {{ url_for( 'signin') }} ">Sign in</a>
       </p>
     </div>
   </main>
 </form>
+
 {% endblock %}

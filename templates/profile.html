@@ -51,8 +51,9 @@
 
 .button-link {
     /* ... Existing styles ... */
+    margin-top: 30px;
     font-size: 18px;
-    transition: background-color 0.3s ease;
+    background-color: lightblue;
 }
 
 .button-link:hover {
@@ -186,11 +187,11 @@
 
             {% if current_user.is_following(user) and current_user.username!=user.username %}
 
-                <button class="button-link"><a href="{{ url_for('unfollow', username=user.username ) }}" class="unfollow">Unfollow</a></button>
+                <button class="button-link"><a style="text-decoration: none;" href="{{ url_for('unfollow', username=user.username ) }}" class="unfollow">Unfollow</a></button>
 
             {% elif user.username != current_user.username %}
 
-                <button type="submit" class="btn profile-edit-btn"><a href="/follow/{{user.id}}"> Follow</a></button>
+                <button type="submit" class="btn profile-edit-btn"><a style="text-decoration: none;" href="/follow/{{user.id}}"> Follow</a></button>
 
 
             {% endif %}

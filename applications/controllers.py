@@ -81,7 +81,7 @@ def create_post():
         filename = photos.save(form.img.data)
         url = photos.url(filename)
         ui = url.replace('_uploads', 'static')
-        post = Post(img=ui, author=current_user, description=form.desc.data)
+        post = Post(img=ui, author=current_user, title=form.title.data, description=form.desc.data)
         db.session.add(post)
         db.session.commit()
         return redirect(url_for('profile', username=current_user.username))
@@ -139,11 +139,13 @@ def edit_post(id):
         url = photos.url(filename)
         ui = url.replace('_uploads', 'static')
         post.img = ui
+        post.title = form.title.data
         post.description = form.desc.data
         db.session.commit()
         return render_template('edit_post.html', form=form)
     elif request.method == 'GET':
         # form.img.data = post.img
+        form.title.data = post.title
         form.desc.data = post.description
     return render_template('edit_post.html', form=form)
 

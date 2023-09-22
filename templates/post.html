@@ -68,11 +68,12 @@
     <form action="/create-post" method="POST" enctype="multipart/form-data" class="post-form">
         <h1 class="form-title">Post Your Thing</h1>
         {{ form.hidden_tag() }}
-
         <div class="form-group">
+            <label for="title" class="form-label">Title</label><br>
+{#            {{ form.title.label }}#}
+            {{ form.title() }}<br>
             <label for="desc" class="form-label">Description</label>
-            {{ form.hidden_tag() }}
-            {{ form.desc.label }}
+{#            {{ form.desc.label }}#}
             {{ form.desc(only_preview=True) }}
             {{ form.desc(class='form-control', placeholder='Enter Markdown', only_input=True, rows=10) }}
         </div>
